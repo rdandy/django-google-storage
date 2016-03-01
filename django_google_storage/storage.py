@@ -3,10 +3,9 @@ import os
 import mimetypes
 
 from django.conf import settings
-from django.core.files.storage import Storage
 from django.core.exceptions import ImproperlyConfigured, SuspiciousOperation
 from django.utils.encoding import force_unicode, smart_str
-
+from .compat import BytesIO, deconstructible, Storage
 from .format import SubdomainCallingFormat
 from .file import GSBotoStorageFile
 from .utils import safe_join
@@ -44,7 +43,7 @@ GZIP_CONTENT_TYPES = getattr(settings, 'GZIP_CONTENT_TYPES', (
     'application/x-javascript'
 ))
 
-
+@deconstructible
 class GoogleStorage(Storage):
     def __init__(self, bucket=STORAGE_BUCKET_NAME, access_key=None,
                  secret_key=None, bucket_acl=BUCKET_ACL, acl=DEFAULT_ACL, headers=HEADERS,
